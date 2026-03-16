@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;My Animation&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let blobs = [];</p>
+<p class="p2"><br></p>
+<p class="p1">function setup() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>createCanvas(400, 600);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clear(); // Make the background transparent</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Create a few blobs</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for (let i = 0; i &lt; 25; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>blobs.push({</p>
+<p class="p1"><span class="Apple-converted-space">      </span>x: random(width),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>y: random(height),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>size: random(30, 70),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>speedY: random(0, 1),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>speedX: random(-2, 0),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>offset: random(100) // For smooth horizontal movement</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function draw() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clear(); // Keep the background transparent</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Darker, more organic color</p>
+<p class="p1"><span class="Apple-converted-space">  </span>fill(0, 180); // Nearly black with a bit of transparency</p>
+<p class="p1"><span class="Apple-converted-space">  </span>noStroke();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Update and draw each blob</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for (let blob of blobs) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Horizontal movement using a sine wave for smooth effect</p>
+<p class="p1"><span class="Apple-converted-space">    </span>blob.x += sin(frameCount * 0.01 + blob.offset) * 0.5;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>blob.y += blob.speedY;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Reverse direction if it goes off screen</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (blob.y &gt; height || blob.y &lt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>blob.speedY *= -1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (blob.x &gt; width || blob.x &lt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>blob.speedX *= -1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Repel from the mouse position with stronger force</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let dx = blob.x - mouseX;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let dy = blob.y - mouseY;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let distance = sqrt(dx * dx + dy * dy);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let maxDistance = 100;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let force = map(distance, 0, maxDistance, 40, 0);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (distance &lt; maxDistance &amp;&amp; distance &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>blob.x += force * dx / distance * 0.1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>blob.y += force * dy / distance * 0.1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>ellipse(blob.x, blob.y, blob.size);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
